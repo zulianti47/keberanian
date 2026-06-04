@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MPI: Petualangan Anak Mandiri & Berani</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts (Playful Style) -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+    }
+    .font-playful {
+      font-family: 'Fredoka One', cursive;
+    }
+    .bubble-btn {
+      transition: transform 0.2s active, box-shadow 0.2s;
+    }
+    .bubble-btn:active {
+      transform: scale(0.95);
+    }
+    /* Animated background */
+    .bg-animated {
+      background: linear-gradient(135deg, #fef08a, #bfdbfe, #bbf7d0);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<body class="bg-animated min-h-screen flex items-center justify-center p-4">
+
+  <!-- Main Container -->
+  <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border-8 border-yellow-400 relative">
+    
+    <!-- Top Bar (Header) -->
+    <div class="bg-yellow-400 p-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <span class="text-3xl">🎒</span>
+        <span class="font-playful text-xl text-yellow-900 tracking-wider">Aku Mandiri & Berani</span>
+      </div>
+      <!-- Star Counter -->
+      <div class="bg-yellow-100 px-4 py-1.5 rounded-full flex items-center space-x-1 border-2 border-yellow-500 shadow-sm">
+        <span class="text-xl">⭐</span>
+        <span id="star-count" class="font-playful text-lg text-yellow-800">0</span>
+      </div>
+    </div>
+
+    <!-- Screen Content Area -->
+    <div class="p-6 md:p-8 min-h-[400px] flex flex-col justify-between">
+      
+      <!-- SCREEN 1: WELCOME SCREEN -->
+      <div id="screen-welcome" class="screen flex flex-col items-center text-center space-y-6">
+        <h1 class="font-playful text-3xl md:text-4xl text-indigo-600 leading-snug">
+          Halo Sahabat Pintar! 👋
+        </h1>
+        <p class="text-gray-700 text-lg md:text-xl font-medium max-w-md">
+          Yuk, ikuti petualangan seru untuk menjadi anak yang <span class="text-emerald-500 font-bold">Mandiri</span> dan <span class="text-pink-500 font-bold">Berani</span>!
+        </p>
+        
+        <!-- Animated Kid Mascot -->
+        <div class="text-7xl md:text-8xl my-4 animate-bounce duration-1000">
+          👦🧒
+        </div>
+
+        <button onclick="startAdventure()" class="bubble-btn bg-emerald-500 hover:bg-emerald-600 text-white font-playful text-xl px-8 py-4 rounded-2xl shadow-lg border-b-4 border-emerald-700 transition transform hover:-translate-y-1">
+          Mulai Petualangan! 🚀
+        </button>
+      </div>
+
+      <!-- SCREEN 2: GAMEPLAY SCREEN -->
+      <div id="screen-gameplay" class="screen hidden flex flex-col justify-between h-full space-y-6">
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden">
+          <div id="progress-bar" class="bg-indigo-500 h-4 rounded-full transition-all duration-500" style="width: 25%"></div>
+        </div>
+
+        <!-- Question and Story -->
+        <div class="text-center space-y-4">
+          <div class="flex justify-center items-center space-x-3">
+            <!-- Audio Button -->
+            <button onclick="speakText()" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-600 p-3 rounded-full shadow-md transition transform hover:scale-110 active:scale-95">
+              <i class="fa-solid var(--voice-icon, fa-volume-high) text-2xl" id="audio-icon"></i>
+            </button>
+            <h2 id="quest-title" class="font-playful text-2xl text-indigo-700">Materi Belajar</h2>
+          </div>
+          
+          <!-- Scene Mascot Illustration -->
+          <div id="scene-emoji" class="text-7xl my-3">🌅</div>
+          
+          <p id="scene-desc" class="text-gray-700 text-lg md:text-xl font-medium bg-indigo-50 p-4 rounded-2xl border border-indigo-100">
+            Matahari sudah terbit! Saatnya bangun tidur. Apa yang sebaiknya kamu lakukan ya?
+          </p>
+        </div>
+
+        <!-- Interactive Options -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Option A -->
+          <button id="opt-a" onclick="chooseOption('A')" class="bubble-btn text-left bg-white hover:bg-emerald-50 border-4 border-emerald-400 p-4 rounded-2xl flex items-center space-x-4 shadow-md transition hover:-translate-y-1">
+            <span class="bg-emerald-100 text-emerald-600 font-playful rounded-full w-10 h-10 flex items-center justify-center text-xl shrink-0">A</span>
+            <span id="opt-a-text" class="text-gray-800 text-base md:text-lg font-semibold">Memakai baju sendiri dengan rapi.</span>
+          </button>
+          
+          <!-- Option B -->
+          <button id="opt-b" onclick="chooseOption('B')" class="bubble-btn text-left bg-white hover:bg-pink-50 border-4 border-pink-400 p-4 rounded-2xl flex items-center space-x-4 shadow-md transition hover:-translate-y-1">
+            <span class="bg-pink-100 text-pink-600 font-playful rounded-full w-10 h-10 flex items-center justify-center text-xl shrink-0">B</span>
+            <span id="opt-b-text" class="text-gray-800 text-base md:text-lg font-semibold">Menangis minta dipakaikan baju oleh Ibu.</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SCREEN 3: FEEDBACK SCREEN (Correct / Wrong with simple kid-friendly logic) -->
+      <div id="screen-feedback" class="screen hidden flex flex-col items-center text-center space-y-6">
+        <div id="fb-icon" class="text-8xl animate-pulse">🎉</div>
+        <h2 id="fb-title" class="font-playful text-3xl text-emerald-600">Hebat! Kamu Mandiri!</h2>
+        <p id="fb-desc" class="text-gray-700 text-lg md:text-xl max-w-md font-medium">
+          Hebat sekali! Memakai baju sendiri membuat kamu tumbuh menjadi anak yang pintar dan mandiri. Ibu dan Ayah pasti bangga!
+        </p>
+        <button onclick="nextQuest()" class="bubble-btn bg-yellow-400 hover:bg-yellow-500 text-yellow-950 font-playful text-lg px-8 py-3.5 rounded-2xl shadow-lg border-b-4 border-yellow-600 transition">
+          Lanjut Bermain! 🌟
+        </button>
+      </div>
+
+      <!-- SCREEN 4: CONGRATULATIONS SCREEN (The End) -->
+      <div id="screen-end" class="screen hidden flex flex-col items-center text-center space-y-6">
+        <div class="text-8xl">🏆</div>
+        <h1 class="font-playful text-3xl md:text-4xl text-indigo-700">Yeeay! Kamu Berhasil!</h1>
+        <p class="text-gray-700 text-lg md:text-xl max-w-md font-medium">
+          Kamu telah menyelesaikan semua petualangan dan terbukti menjadi <span class="text-emerald-500 font-bold">Anak yang Mandiri</span> serta <span class="text-pink-500 font-bold">Pemberani</span>!
+        </p>
+
+        <!-- Badge Award Container -->
+        <div class="bg-indigo-50 border-2 border-indigo-200 p-4 rounded-3xl flex items-center space-x-4 shadow-inner">
+          <div class="text-5xl">🏅</div>
+          <div class="text-left">
+            <h4 class="font-playful text-indigo-800">Lencana Kehormatan</h4>
+            <p class="text-sm text-gray-600">Anak Mandiri & Tangguh PAUD</p>
+          </div>
+        </div>
+
+        <button onclick="restartGame()" class="bubble-btn bg-emerald-500 hover:bg-emerald-600 text-white font-playful text-lg px-8 py-3.5 rounded-2xl shadow-lg border-b-4 border-emerald-700 transition">
+          Main Lagi! 🔄
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Footer / Audio Narration Guide -->
+    <div class="bg-gray-100 p-3 text-center text-xs md:text-sm text-gray-500 border-t border-gray-200">
+      💡 <span class="font-semibold">Tips Guru/Orang Tua:</span> Dampingi anak-anak saat memilih dan dengarkan suara narasinya bersama-sama.
+    </div>
+
+  </div>
+
+  <script>
+    // State Variables
+    let stars = 0;
+    let currentQuestIdx = 0;
+
+    // Quests Database (Kemandirian & Keberanian scenarios)
+    const quests = [
+      {
+        title: "Kemandirian di Pagi Hari",
+        emoji: "🌅",
+        narrative: "Matahari sudah terbit! Saatnya bangun tidur. Agar menjadi anak mandiri, apa yang sebaiknya kamu lakukan?",
+        optA: "Merapikan tempat tidur sendiri dengan ceria.",
+        optB: "Membiarkan kasur berantakan dan langsung pergi bermain.",
+        correct: "A",
+        feedbackCorrect: "Keren sekali! Merapikan tempat tidur sendiri adalah ciri utama anak hebat dan mandiri!",
+        feedbackWrong: "Oh tidak... Kasur yang berantakan bisa menjadi sarang debu. Yuk, coba merapikannya sendiri ya!"
+      },
+      {
+        title: "Kemandirian saat Mandi",
+        emoji: "🛁",
+        narrative: "Waktunya mandi pagi biar badan segar dan wangi! Pilihan mana yang menunjukkan anak mandiri?",
+        optA: "Menunggu di kamar mandi sampai dimandikan Ayah atau Ibu.",
+        optB: "Mencoba mandi sendiri, menggosok gigi, dan memakai sabun.",
+        correct: "B",
+        feedbackCorrect: "Luar biasa! Mandi sendiri membuat badan sehat dan kamu menjadi anak mandiri yang jempolan!",
+        feedbackWrong: "Kurang tepat. Yuk belajar memakai sabun dan menggosok gigimu sendiri mulai hari ini!"
+      },
+      {
+        title: "Keberanian di Sekolah",
+        emoji: "🏫",
+        narrative: "Di sekolah, Ibu Guru bertanya siapa yang mau menyanyi di depan kelas. Bagaimana sikap beranimu?",
+        optA: "Mengangkat tangan dengan senyum dan berani tampil bernyanyi.",
+        optB: "Sembunyi di belakang meja karena malu dan takut.",
+        correct: "A",
+        feedbackCorrect: "Hebat! Berani tampil di depan kelas itu sangat bagus untuk melatih rasa percaya dirimu!",
+        feedbackWrong: "Tidak perlu takut, semua temanmu akan mendukungmu. Yuk, latih keberanianmu pelan-pelan!"
+      },
+      {
+        title: "Keberanian saat Malam Hari",
+        emoji: "🌙",
+        narrative: "Hari sudah malam, saatnya tidur. Kamarmu agak gelap tetapi nyaman. Apa yang kamu lakukan?",
+        optA: "Menangis keras meminta tidur dipeluk Ibu semalaman.",
+        optB: "Berdoa sebelum tidur dan berani tidur di kamarmu sendiri.",
+        correct: "B",
+        feedbackCorrect: "Luar biasa! Kamu adalah pahlawan kecil yang sangat berani tidur sendiri di kamarmu!",
+        feedbackWrong: "Tenang saja, ada malaikat baik yang menjagamu dan Ibu ada di kamar sebelah. Kamu pasti berani!"
+      }
+    ];
+
+    // Sound effects via Web Audio API (Synthesizer sounds for kids)
+    function playSound(type) {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      if (type === 'correct') {
+        // High upbeat tone
+        osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+        osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // E5
+        osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2); // G5
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.4);
+      } else if (type === 'wrong') {
+        // Low sad tone
+        osc.frequency.setValueAtTime(220, ctx.currentTime); // A3
+        osc.frequency.setValueAtTime(196, ctx.currentTime + 0.15); // G3
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.4);
+      } else if (type === 'click') {
+        // Neutral click
+        osc.frequency.setValueAtTime(600, ctx.currentTime);
+        gain.gain.setValueAtTime(0.05, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.1);
+      }
+    }
+
+    // Text-to-Speech (TTS) Narration
+    let synth = window.speechSynthesis;
+    let currentUtterance = null;
+
+    function speakText() {
+      if (!synth) return;
+      
+      // Toggle stop if already speaking
+      if (synth.speaking) {
+        synth.cancel();
+        setAudioIcon(false);
+        return;
+      }
+
+      // Read narration and option texts
+      const quest = quests[currentQuestIdx];
+      const textToRead = `${quest.title}. ${quest.narrative}. Pilihan A: ${quest.optA}. Pilihan B: ${quest.optB}. Ayo, pilih jawabanmu!`;
+      
+      currentUtterance = new SpeechSynthesisUtterance(textToRead);
+      currentUtterance.lang = 'id-ID'; // Indonesian voice
+      
+      // Find Indonesian voice if available
+      const voices = synth.getVoices();
+      const idVoice = voices.find(voice => voice.lang.includes('id') || voice.lang.includes('ID'));
+      if (idVoice) {
+        currentUtterance.voice = idVoice;
+      }
+
+      currentUtterance.onstart = () => setAudioIcon(true);
+      currentUtterance.onend = () => setAudioIcon(false);
+      currentUtterance.onerror = () => setAudioIcon(false);
+
+      synth.speak(currentUtterance);
+    }
+
+    function setAudioIcon(isPlaying) {
+      const icon = document.getElementById('audio-icon');
+      if (isPlaying) {
+        icon.className = "fa-solid fa-volume-xmark text-2xl animate-pulse text-red-500";
+      } else {
+        icon.className = "fa-solid fa-volume-high text-2xl";
+      }
+    }
+
+    // Stop speaking whenever navigating
+    function stopSpeaking() {
+      if (synth && synth.speaking) {
+        synth.cancel();
+        setAudioIcon(false);
+      }
+    }
+
+    // Navigation and Logic functions
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.add('hidden');
+      });
+      document.getElementById(screenId).classList.remove('hidden');
+    }
+
+    function startAdventure() {
+      playSound('click');
+      currentQuestIdx = 0;
+      stars = 0;
+      updateStarUI();
+      loadQuest();
+      showScreen('screen-gameplay');
+    }
+
+    function loadQuest() {
+      stopSpeaking();
+      const quest = quests[currentQuestIdx];
+      
+      // Update details
+      document.getElementById('quest-title').innerText = quest.title;
+      document.getElementById('scene-emoji').innerText = quest.emoji;
+      document.getElementById('scene-desc').innerText = quest.narrative;
+      document.getElementById('opt-a-text').innerText = quest.optA;
+      document.getElementById('opt-b-text').innerText = quest.optB;
+
+      // Update progress bar
+      const progressPercent = ((currentQuestIdx + 1) / quests.length) * 100;
+      document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+      // Read automatically shortly after entering (child friendly)
+      setTimeout(() => {
+        speakText();
+      }, 500);
+    }
+
+    function chooseOption(selected) {
+      stopSpeaking();
+      const quest = quests[currentQuestIdx];
+      const fbIcon = document.getElementById('fb-icon');
+      const fbTitle = document.getElementById('fb-title');
+      const fbDesc = document.getElementById('fb-desc');
+
+      if (selected === quest.correct) {
+        // Correct Choice
+        playSound('correct');
+        stars += 1;
+        updateStarUI();
+
+        fbIcon.innerText = "🎉";
+        fbIcon.className = "text-8xl animate-bounce";
+        fbTitle.innerText = "Yeeey! Kamu Benar!";
+        fbTitle.className = "font-playful text-3xl text-emerald-600";
+        fbDesc.innerText = quest.feedbackCorrect;
+      } else {
+        // Wrong Choice
+        playSound('wrong');
+        fbIcon.innerText = "💡";
+        fbIcon.className = "text-8xl animate-pulse";
+        fbTitle.innerText = "Yuk, Belajar Lagi!";
+        fbTitle.className = "font-playful text-3xl text-amber-500";
+        fbDesc.innerText = quest.feedbackWrong;
+      }
+
+      showScreen('screen-feedback');
+
+      // Narration for feedback screen
+      setTimeout(() => {
+        if (synth) {
+          const fbUtterance = new SpeechSynthesisUtterance(`${fbTitle.innerText}. ${fbDesc.innerText}`);
+          fbUtterance.lang = 'id-ID';
+          synth.speak(fbUtterance);
+        }
+      }, 300);
+    }
+
+    function nextQuest() {
+      stopSpeaking();
+      playSound('click');
+      currentQuestIdx += 1;
+
+      if (currentQuestIdx < quests.length) {
+        loadQuest();
+        showScreen('screen-gameplay');
+      } else {
+        showScreen('screen-end');
+        playSound('correct');
+        // Final congratulations narration
+        setTimeout(() => {
+          if (synth) {
+            const endUtterance = new SpeechSynthesisUtterance("Yeeay! Kamu berhasil! Kamu adalah anak yang Mandiri dan Pemberani!");
+            endUtterance.lang = 'id-ID';
+            synth.speak(endUtterance);
+          }
+        }, 500);
+      }
+    }
+
+    function updateStarUI() {
+      document.getElementById('star-count').innerText = stars;
+    }
+
+    function restartGame() {
+      playSound('click');
+      startAdventure();
+    }
+
+    // Load voices on start (especially for Android/Chrome compatibility)
+    if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = () => {
+        // Warmup voices
+      };
+    }
+  </script>
+</body>
+</html>
